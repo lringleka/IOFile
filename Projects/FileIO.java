@@ -13,10 +13,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class FileIO {
-	private static final Pattern pattern1 = Pattern.compile("[KQNRBP][ld][abcdefgh][12345678]" );
-	private static final Pattern pattern2 = Pattern.compile("[abcdefgh][12345678] [abcdefgh][12345678]");
-	private static final Pattern pattern3 = Pattern.compile("[abcdefgh][12345678] [abcdefgh][12345678][*]");
-	private static final Pattern pattern4 = Pattern.compile("[abcdefgh][12345678] [abcdefgh][12345678] [abcdefgh][12345678] [abcdefgh][12345678]");
+	private static final Pattern pattern1 = Pattern.compile("[KQNRBP][ld][a-h][1-8]" );
+	private static final Pattern pattern2 = Pattern.compile("[a-h][1-8] [a-h][1-8]");
+	private static final Pattern pattern3 = Pattern.compile("[a-h][1-8] [a-h][1-8][*]");
+	private static final Pattern pattern4 = Pattern.compile("[a-h][1-8] [a-h][1-8] [a-h][1-8] [a-h][1-8]");
 
 	public static void main(String[] args) throws FileNotFoundException {
 		File f = new File(args[0]);
