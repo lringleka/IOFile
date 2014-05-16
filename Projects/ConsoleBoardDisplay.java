@@ -6,8 +6,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -47,39 +45,31 @@ public class ConsoleBoardDisplay {
 				m2 = pattern2.matcher(next);
 				m3 = pattern3.matcher(next);
 				m4 = pattern4.matcher(next);
-				Map<Character, String> key = new HashMap<Character, String>();
-				key.put('K', " king ");
-				key.put('Q', " queen ");
-				key.put('N', " knight ");
-				key.put('R', " rook ");
-				key.put('B', " bishop ");
-				key.put('P', " pawn ");
 
 				if (m4.find()) {
-					
-					  if(board[(int)m4.group(1).toLowerCase().toCharArray()[0]
-					  - 97][(int)m4.group(2).toCharArray()[0] - 49] != '-' &&
-					  board[(int)m4.group(5).toLowerCase().toCharArray()[0] -
-					  97][(int)m4.group(6).toCharArray()[0] - 49] != '-'){
-						  
-						  char piece = board[(int) m4.group(1).toLowerCase()
-												.toCharArray()[0] - 97][(int) m4.group(2)
-												.toCharArray()[0] - 49];
-										board[(int) m4.group(1).toLowerCase().toCharArray()[0] - 97][(int) m4
-												.group(2).toCharArray()[0] - 49] = '-';
-										board[(int) m4.group(3).toLowerCase().toCharArray()[0] - 97][(int) m4
-												.group(4).toCharArray()[0] - 49] = piece;
-						  
-										
-										 piece = board[(int) m4.group(5).toLowerCase()
-															.toCharArray()[0] - 97][(int) m4.group(6)
-															.toCharArray()[0] - 49];
-													board[(int) m4.group(5).toLowerCase().toCharArray()[0] - 97][(int) m4
-															.group(6).toCharArray()[0] - 49] = '-';
-													board[(int) m4.group(7).toLowerCase().toCharArray()[0] - 97][(int) m4
-															.group(8).toCharArray()[0] - 49] = piece;
-					  }
-					 
+
+					if (board[(int) m4.group(1).toLowerCase().toCharArray()[0] - 97][(int) m4
+							.group(2).toCharArray()[0] - 49] != '-'
+							&& board[(int) m4.group(5).toLowerCase()
+									.toCharArray()[0] - 97][(int) m4.group(6)
+									.toCharArray()[0] - 49] != '-') {
+
+						char piece = board[(int) m4.group(1).toLowerCase()
+								.toCharArray()[0] - 97][(int) m4.group(2)
+								.toCharArray()[0] - 49];
+						board[(int) m4.group(1).toLowerCase().toCharArray()[0] - 97][(int) m4
+								.group(2).toCharArray()[0] - 49] = '-';
+						board[(int) m4.group(3).toLowerCase().toCharArray()[0] - 97][(int) m4
+								.group(4).toCharArray()[0] - 49] = piece;
+
+						piece = board[(int) m4.group(5).toLowerCase()
+								.toCharArray()[0] - 97][(int) m4.group(6)
+								.toCharArray()[0] - 49];
+						board[(int) m4.group(5).toLowerCase().toCharArray()[0] - 97][(int) m4
+								.group(6).toCharArray()[0] - 49] = '-';
+						board[(int) m4.group(7).toLowerCase().toCharArray()[0] - 97][(int) m4
+								.group(8).toCharArray()[0] - 49] = piece;
+					}
 
 				} else if (m3.find()) {
 					if (board[(int) m3.group(1).toLowerCase().toCharArray()[0] - 97][(int) m3
@@ -156,7 +146,8 @@ public class ConsoleBoardDisplay {
 					String piece = m1.group(1);
 					if (m1.group(2).equals("l")) {
 						piece = piece.toLowerCase();
-
+					} else {
+						piece = piece.toUpperCase();
 					}
 					board[(int) m1.group(3).toLowerCase().toCharArray()[0] - 97][(int) m1
 							.group(4).toCharArray()[0] - 49] = piece
