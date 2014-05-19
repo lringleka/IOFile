@@ -150,7 +150,7 @@ public class ConsoleBoardDisplay {
 						piece = piece.toUpperCase();
 					}
 					board[(int) m1.group(3).toLowerCase().toCharArray()[0] - 97][(int) m1
-							.group(4).toCharArray()[0] - 49] = piece
+							.group(4).toCharArray()[0] - '0'] = piece
 							.toCharArray()[0];
 
 				} else {

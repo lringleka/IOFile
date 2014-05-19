@@ -7,17 +7,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class PieceMovement {
-
-	private static final Pattern pattern1 = Pattern
-			.compile("([a-h])([1-8]) ([a-h])([1-8])");
-	private static final Pattern pattern2 = Pattern
-			.compile("([a-h])([1-8]) ([a-h])([1-8])[*]");
-	private static final Pattern pattern3 = Pattern
-			.compile("([a-h])([1-8]) ([a-h])([1-8]) ([a-h])([1-8]) ([a-h])([1-8])");
 
 	public static void main(String[] args) throws FileNotFoundException {
 
@@ -49,184 +40,140 @@ public class PieceMovement {
 		board[7][6] = 'n';
 		board[7][7] = 'r';
 
-		Matcher match3;
-		Matcher match2;
-		Matcher match1;
 		String next;
+		ValidityChecker vc = new ValidityChecker();
+		PatternChecker pc = new PatternChecker();
+		Board b = new Board();
 
 		try {
 			next = br.readLine();
 			while (next != null) {
-				match1 = pattern1.matcher(next);
-				match2 = pattern2.matcher(next);
-				match3 = pattern3.matcher(next);
 
-				if (match3.find()) {
+				if (pc.checkDubMove(next)) {
 
-					if (validMove(
+					if (vc.validMove(
 							new Point(
-									(int) match3.group(2).toCharArray()[0] - 49,
-									(int) match3.group(1).toLowerCase()
-											.toCharArray()[0] - 97),
-							new Point((int) match3.group(
-									6).toCharArray()[0] - 49,(int) match3.group(5).toLowerCase()
-									.toCharArray()[0] - 97),
-							board[(int) match3.group(1).toLowerCase()
-									.toCharArray()[0] - 97][(int) match3.group(
-									2).toCharArray()[0] - 49])
-							&& board[(int) match3.group(5).toLowerCase()
-									.toCharArray()[0] - 97][(int) match3.group(
-									6).toCharArray()[0] - 49] != '-') {
+									(int) pc.getGroup(2).toCharArray()[0] - '1',
+									(int) pc.getGroup(1).toLowerCase()
+											.toCharArray()[0] - 'a'),
+							new Point(
+									(int) pc.getGroup(6).toCharArray()[0] - '1',
+									(int) pc.getGroup(5).toLowerCase()
+											.toCharArray()[0] - 'a'),
+							b.getCoord(new Point((int) pc.getGroup(1).toLowerCase()
+									.toCharArray()[0] - 'a',(int) pc.getGroup(
+									2).toCharArray()[0] - '1')))
+							&& b.getCoord(new Point((int) pc.getGroup(5).toLowerCase()
+									.toCharArray()[0] - 'a',(int) pc.getGroup(
+									6).toCharArray()[0] - '1')) != '-') {
+						b.move(new Point((int) pc.getGroup(1).toLowerCase()
+								.toCharArray()[0] - 'a', (int) pc.getGroup(2)
+								.toCharArray()[0] - '1'), new Point(
+								(int) pc.getGroup(3).toLowerCase()
+										.toCharArray()[0] - 'a', (int) pc
+										.getGroup(4).toCharArray()[0] - '1'));
 
-						char piece = board[(int) match3.group(1).toLowerCase()
-								.toCharArray()[0] - 97][(int) match3.group(2)
-								.toCharArray()[0] - 49];
-						board[(int) match3.group(1).toLowerCase().toCharArray()[0] - 97][(int) match3
-								.group(2).toCharArray()[0] - 49] = '-';
-						board[(int) match3.group(3).toLowerCase().toCharArray()[0] - 97][(int) match3
-								.group(4).toCharArray()[0] - 49] = piece;
+						b.move(new Point((int) pc.getGroup(5).toLowerCase()
+								.toCharArray()[0] - 'a', (int) pc.getGroup(6)
+								.toCharArray()[0] - '1'), new Point(
+								(int) pc.getGroup(7).toLowerCase()
+										.toCharArray()[0] - 'a', (int) pc
+										.getGroup(8).toCharArray()[0] - '1'));
 
-						piece = board[(int) match3.group(5).toLowerCase()
-								.toCharArray()[0] - 97][(int) match3.group(6)
-								.toCharArray()[0] - 49];
-						board[(int) match3.group(5).toLowerCase().toCharArray()[0] - 97][(int) match3
-								.group(6).toCharArray()[0] - 49] = '-';
-						board[(int) match3.group(7).toLowerCase().toCharArray()[0] - 97][(int) match3
-								.group(8).toCharArray()[0] - 49] = piece;
-					}
-					else if (match2.find()) {
-						if (board[(int) match2.group(1).toLowerCase().toCharArray()[0] - 97][(int) match2
-								.group(2).toCharArray()[0] - 49] != '-'
-								&& board[(int) match2.group(3).toLowerCase()
-										.toCharArray()[0] - 97][(int) match2.group(4)
-										.toCharArray()[0] - 49] != '-') {
-							if (board[(int) match2.group(1).toLowerCase().toCharArray()[0] - 97][(int) match2
-									.group(2).toCharArray()[0] - 49] >= 'a'
-									&& board[(int) match2.group(1).toLowerCase()
-											.toCharArray()[0] - 97][(int) match2.group(
-											2).toCharArray()[0] - 49] <= 'z') {
-								if (board[(int) match2.group(3).toLowerCase()
-										.toCharArray()[0] - 97][(int) match2.group(4)
-										.toCharArray()[0] - 49] >= 'A'
-										&& board[(int) match2.group(3).toLowerCase()
-												.toCharArray()[0] - 97][(int) match2
-												.group(4).toCharArray()[0] - 49] <= 'Z') {
-
-									char piece = board[match2.group(1).toLowerCase()
-											.toCharArray()[0] - 97][match2.group(2)
-											.toCharArray()[0] - 49];
-
-									board[(int) match2.group(1).toLowerCase()
-											.toCharArray()[0] - 97][(int) match2.group(
-											2).toCharArray()[0] - 49] = '-';
-
-									board[(int) match2.group(3).toLowerCase()
-											.toCharArray()[0] - 97][(int) match2.group(
-											4).toCharArray()[0] - 49] = piece;
+					} else if (pc.checkTake(next)) {
+						if (vc.validMove(
+								new Point(
+										(int) pc.getGroup(2).toCharArray()[0] - '1',
+										(int) pc.getGroup(1).toLowerCase()
+												.toCharArray()[0] - 'a'),
+								new Point(
+										(int) pc.getGroup(6).toCharArray()[0] - '1',
+										(int) pc.getGroup(5).toLowerCase()
+												.toCharArray()[0] - 'a'),
+								b.getCoord(new Point((int) pc.getGroup(1).toLowerCase()
+										.toCharArray()[0] - 'a',(int) pc
+										.getGroup(2).toCharArray()[0] - '1')))
+								&& b.getCoord(new Point((int) pc.getGroup(3).toLowerCase()
+										.toCharArray()[0] - 'a',(int) pc
+										.getGroup(4).toCharArray()[0] - '1')) != '-') {
+							if (b.getCoord(new Point((int) pc.getGroup(1).toLowerCase()
+									.toCharArray()[0] - 'a',(int) pc.getGroup(
+									2).toCharArray()[0] - '1')) >= 'a'
+									&& b.getCoord(new Point((int) pc.getGroup(1).toLowerCase()
+											.toCharArray()[0] - 'a',(int) pc
+											.getGroup(2).toCharArray()[0] - '1')) <= 'z') {
+								if (b.getCoord(new Point((int) pc.getGroup(3).toLowerCase()
+										.toCharArray()[0] - 'a',(int) pc
+										.getGroup(4).toCharArray()[0] - '1')) >= 'A'
+										&& b.getCoord(new Point((int) pc.getGroup(3)
+												.toLowerCase().toCharArray()[0] - 'a',(int) pc
+												.getGroup(4).toCharArray()[0] - '1')) <= 'Z') {
+									
+									b.move(new Point((int) pc.getGroup(1).toLowerCase()
+											.toCharArray()[0] - 'a', (int) pc.getGroup(2)
+											.toCharArray()[0] - '1'), new Point(
+											(int) pc.getGroup(3).toLowerCase()
+													.toCharArray()[0] - 'a', (int) pc
+													.getGroup(4).toCharArray()[0] - '1'));
+									
+									
 								}
 							}
 
-							if (board[(int) match2.group(1).toLowerCase().toCharArray()[0] - 97][(int) match2
-									.group(2).toCharArray()[0] - 49] >= 'A'
-									&& board[(int) match2.group(1).toLowerCase()
-											.toCharArray()[0] - 97][(int) match2.group(
-											2).toCharArray()[0] - 49] <= 'Z') {
-								if (board[(int) match2.group(3).toLowerCase()
-										.toCharArray()[0] - 97][(int) match2.group(4)
-										.toCharArray()[0] - 49] >= 'a'
-										&& board[(int) match2.group(3).toLowerCase()
-												.toCharArray()[0] - 97][(int) match2
-												.group(4).toCharArray()[0] - 49] <= 'z') {
+							if (b.getCoord(new Point((int) pc.getGroup(1).toLowerCase()
+									.toCharArray()[0] - 'a',(int) pc.getGroup(
+									2).toCharArray()[0] - '1')) >= 'A'
+									&& b.getCoord(new Point((int) pc.getGroup(1).toLowerCase()
+											.toCharArray()[0] - 'a',(int) pc
+											.getGroup(2).toCharArray()[0] - '1')) <= 'Z') {
+								if (b.getCoord(new Point((int) pc.getGroup(3).toLowerCase()
+										.toCharArray()[0] - 'a',(int) pc
+										.getGroup(4).toCharArray()[0] - '1')) >= 'a'
+										&& b.getCoord(new Point((int) pc.getGroup(3)
+												.toLowerCase().toCharArray()[0] - 'a',(int) pc
+												.getGroup(4).toCharArray()[0] - '1')) <= 'z') {
 
-									char piece = board[match2.group(1).toLowerCase()
-											.toCharArray()[0] - 97][match2.group(2)
-											.toCharArray()[0] - 49];
-
-									board[(int) match2.group(1).toLowerCase()
-											.toCharArray()[0] - 97][(int) match2.group(
-											2).toCharArray()[0] - 49] = '-';
-
-									board[(int) match2.group(3).toLowerCase()
-											.toCharArray()[0] - 97][(int) match2.group(
-											4).toCharArray()[0] - 49] = piece;
+									b.move(new Point((int) pc.getGroup(1).toLowerCase()
+											.toCharArray()[0] - 'a', (int) pc.getGroup(2)
+											.toCharArray()[0] - '1'), new Point(
+											(int) pc.getGroup(3).toLowerCase()
+													.toCharArray()[0] - 'a', (int) pc
+													.getGroup(4).toCharArray()[0] - '1'));
 								}
 							}
 						}
 
 					}
+				} else if (pc.checkMove(next)) {
+					if (vc.validMove(
+							new Point(
+									(int) pc.getGroup(2).toCharArray()[0] - '1',
+									(int) pc.getGroup(1).toLowerCase()
+											.toCharArray()[0] - 'a'),
+							new Point(
+									(int) pc.getGroup(6).toCharArray()[0] - '1',
+									(int) pc.getGroup(5).toLowerCase()
+											.toCharArray()[0] - 'a'),
+							b.getCoord(new Point((int) pc.getGroup(1).toLowerCase()
+									.toCharArray()[0] - 'a',(int) pc
+									.getGroup(2).toCharArray()[0] - '1'))) && b.getCoord(new Point((int) pc.getGroup(1).toLowerCase().toCharArray()[0] - 97,(int) pc
+							.getGroup(2).toCharArray()[0] - 49)) != '-') {
+						b.move(new Point((int) pc.getGroup(1).toLowerCase()
+								.toCharArray()[0] - 'a', (int) pc.getGroup(2)
+								.toCharArray()[0] - '1'), new Point(
+								(int) pc.getGroup(3).toLowerCase()
+										.toCharArray()[0] - 'a', (int) pc
+										.getGroup(4).toCharArray()[0] - '1'));
+					}
 				}
 				next = br.readLine();
 			}
 		} catch (IOException e) {
-
+			e.printStackTrace();
 		}
 
-		for (int i = 0; i < 8; i++) {
-			for (int j = 0; j < 8; j++) {
-				System.out.print(board[i][j]);
-			}
-			System.out.println();
+		b.printBoard();
 		}
 	}
 
-	private static boolean validMove(Point start, Point end, char piece) {
-		if (piece == 'R' || piece == 'r') {
-			return validRook(start, end);
-		}
-		if (piece == 'N' || piece == 'n') {
-			return validKnight(start, end);
-		}
-		if (piece == 'B' || piece == 'b') {
-			return validBishop(start, end);
-		}
-		if (piece == 'Q' || piece == 'q') {
-			return validQueen(start, end);
-		}
-		if (piece == 'K' || piece == 'k') {
-			return validKing(start, end);
-		}
 
-		return false;
-	}
-
-	private static boolean validRook(Point start, Point end) {
-		if (start.x == end.x || start.y == end.y) {
-			return true;
-		}
-		return false;
-	}
-
-	private static boolean validKnight(Point start, Point end) {
-		if (start.x + 2 == end.x
-				&& (start.y + 1 == end.y || start.y - 1 == end.y)) {
-			return true;
-		}
-		if (start.x - 2 == end.x
-				&& (start.y + 1 == end.y || start.y - 1 == end.y)) {
-			return true;
-		}
-		if (start.y + 2 == end.y
-				&& (start.x + 1 == end.x || start.x - 1 == end.x)) {
-			return true;
-		}
-		if (start.y - 2 == end.y
-				&& (start.x + 1 == end.x || start.x - 1 == end.x)) {
-			return true;
-		}
-
-		return false;
-	}
-
-	private static boolean validBishop(Point start, Point end) {
-		return true;
-	}
-
-	private static boolean validKing(Point start, Point end) {
-		return true;
-	}
-
-	private static boolean validQueen(Point start, Point end) {
-		return true;
-	}
-
-}
