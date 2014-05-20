@@ -19,7 +19,7 @@ public class ValidityChecker {
 		if (piece == 'K' || piece == 'k') {
 			return validKing(start, end);
 		}
-
+		
 		return false;
 	}
 
@@ -52,14 +52,27 @@ public class ValidityChecker {
 	}
 
 	private static boolean validBishop(Point start, Point end) {
-		return true;
+		if(start.x - end.x == start.y - end.y || start.x - end.x == end.y - start.y || end.x - start.x == start.y - end.y){
+			return true;
+		}
+		return false;
 	}
 
 	private static boolean validKing(Point start, Point end) {
-		return true;
+		if((start.x - end.x == 1 || start.x - end.x == -1) && (start.y - end.y == 1 || start.y - end.y == -1)){
+			return true;
+		}else if((start.x == end.x && (start.y - end.y == 1 || start.y - end.y == -1)) || (start.y == end.y && (start.x - end.x == 1 || start.x - end.x == -1))){
+			return true;
+		}
+		return false;
 	}
 
 	private static boolean validQueen(Point start, Point end) {
-		return true;
+		if(start.x - end.x == start.y - end.y || start.x - end.x == end.y - start.y || end.x - start.x == start.y - end.y){
+			return true;
+		}else if (start.x == end.x || start.y == end.y) {
+			return true;
+		}
+		return false;
 	}
 }
