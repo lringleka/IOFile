@@ -48,20 +48,21 @@ private Character[][] board;
 		board[6][7] = 'p';*/
 	}
 	public char getCoord(Point query){
-		return board[query.y][query.x];
+		return board[query.x][query.y];
 	}
 	public void move(Point start, Point end){
-		char piece = board[start.y][start.x];
-		board[start.y][start.x] = '-';
-		board[end.y][end.x] = piece;
+		char piece = board[start.x][start.y];
+		board[start.x][start.y] = '-';
+		board[end.x][end.y] = piece;
 	}
 	public void printBoard(){
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
-				System.out.print(board[i][j]);
+				System.out.print(board[i][j] + " ");
 			}
 			System.out.println();
 		}
+		System.out.println();
 	}
 	
 }
