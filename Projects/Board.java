@@ -20,14 +20,14 @@ private Character[][] board;
 		board[0][6] = 'N';
 		board[0][7] = 'R';
 		
-		/*board[1][0] = 'P';
+		board[1][0] = 'P';
 		board[1][1] = 'P';
 		board[1][2] = 'P';
 		board[1][3] = 'P';
 		board[1][4] = 'P';
 		board[1][5] = 'P';
 		board[1][6] = 'P';
-		board[1][7] = 'P';*/
+		board[1][7] = 'P';
 
 		board[7][0] = 'r';
 		board[7][1] = 'n';
@@ -38,14 +38,14 @@ private Character[][] board;
 		board[7][6] = 'n';
 		board[7][7] = 'r';
 		
-		/*board[6][0] = 'p';
+		board[6][0] = 'p';
 		board[6][1] = 'p';
 		board[6][2] = 'p';
 		board[6][3] = 'p';
 		board[6][4] = 'p';
 		board[6][5] = 'p';
 		board[6][6] = 'p';
-		board[6][7] = 'p';*/
+		board[6][7] = 'p';
 	}
 	public char getCoord(Point query){
 		return board[query.x][query.y];
@@ -64,5 +64,91 @@ private Character[][] board;
 		}
 		System.out.println();
 	}
-	
+	public boolean collisionCheck(Point start, Point end){
+		boolean collide = false;
+		if (start.x == end.x && start.y != end.y) {
+			if(start.y > end.y){
+				for(int i = end.y + 1; i < start.y; i++){
+					if(board[start.x][i] != '-'){
+						collide = true;
+					}
+				}
+			}else if(start.y < end.y){
+				for(int i = start.y + 1; i < end.y; i++){
+					if(board[start.x][i] != '-'){
+						collide = true;
+					}
+				}
+			}
+			
+		}else if (start.y == end.y && start.x != end.x) {
+			if(start.x > end.x){
+				for(int i = end.x + 1; i < start.x; i++){
+					if(board[i][start.y] != '-'){
+						collide = true;
+					}
+				}
+			}else if(start.x < end.x){
+				for(int i = start.x + 1; i < end.x; i++){
+					if(board[i][start.y] != '-'){
+						collide = true;
+					}
+				}
+			}
+			
+		}if(Math.abs(start.x - end.x) == Math.abs(start.y - end.y)){
+			int x,y;
+			if(start.x > end.x && start.y > end.y){
+				x = start.x - 1;
+				y = start.y - 1;
+				while(y > end.y){
+					if(board[x][y] != '-'){
+						collide = true;
+					}
+					x--;
+					y--;
+				}
+			}else if(start.x < end.x && start.y > end.y){
+				x = start.x + 1;
+				y = start.y - 1;
+				while(y > end.y){
+					if(board[x][y] != '-'){
+						collide = true;
+					}
+					x++;
+					y--;
+				}
+			}else if(start.x < end.x && start.y < end.y){
+				x = start.x + 1;
+				y = start.y + 1;
+				while(y < end.y){
+					if(board[x][y] != '-'){
+						collide = true;
+					}
+					x++;
+					y++;
+				}
+			}else if(start.x > end.x && start.y < end.y){
+				x = start.x - 1;
+				y = start.y + 1;
+				while(y < end.y){
+					if(board[x][y] != '-'){
+						collide = true;
+					}
+					x--;
+					y++;
+				}
+			}
+		}
+		return !collide;
+	}
+	public boolean turnCheck(boolean turn, Point start){
+		if(Character.isUpperCase(board[start.x][start.y])&& turn){
+			return true;
+		}
+		if(Character.isLowerCase(board[start.x][start.y])&& !turn){
+			return true;
+		}
+		return false;
+	}
 }

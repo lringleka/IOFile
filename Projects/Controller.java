@@ -8,7 +8,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class PieceMovement {
+public class Controller {
 
 	public static void main(String[] args) throws Exception {
 
@@ -20,11 +20,14 @@ public class PieceMovement {
 		ValidityChecker vc = new ValidityChecker();
 		PatternChecker pc = new PatternChecker();
 		Board b = new Board();
+		Boolean valid;
+		Boolean turn;
 
 		try {
 			next = br.readLine();
+			turn = true;
 			while (next != null) {
-
+				valid = true;
 				if (pc.checkDubMove(next)) {
 
 					Point start1 = new Point(
@@ -40,10 +43,10 @@ public class PieceMovement {
 							(int) pc.getGroup(8).toCharArray()[0] - '1',
 							(int) pc.getGroup(7).toLowerCase().toCharArray()[0] - 'a');
 
-					if (vc.validMove(start1, end1, b.getCoord(start1))
-							&& b.getCoord(end1) == '-'
-							&& vc.validMove(start2, end2, b.getCoord(start2))
-							&& b.getCoord(end2) == '-') {
+					if (vc.validMove(start1, end1, b.getCoord(start1), false)
+							&& b.getCoord(end1) == '-' && b.collisionCheck(start1, end1)
+							&& vc.validMove(start2, end2, b.getCoord(start2), false)
+							&& b.getCoord(end2) == '-' && b.collisionCheck(start2, end2) && b.turnCheck(turn, start1) && b.turnCheck(turn, start2)) {
 						b.move(start1, end1);
 
 						b.move(start2, end2);
@@ -51,6 +54,8 @@ public class PieceMovement {
 					} else {
 						Exception ex = new Exception("Invalid move.");
 						System.out.println(ex.getMessage());
+						System.out.println();
+						valid = false;
 					}
 				} else if (pc.checkTake(next)) {
 
@@ -61,8 +66,8 @@ public class PieceMovement {
 							(int) pc.getGroup(4).toCharArray()[0] - '1',
 							(int) pc.getGroup(3).toLowerCase().toCharArray()[0] - 'a');
 
-					if (vc.validMove(start, end, b.getCoord(start))
-							&& b.getCoord(end) != '-') {
+					if (vc.validMove(start, end, b.getCoord(start), true)
+							&& b.getCoord(end) != '-' && b.collisionCheck(start, end) && b.turnCheck(turn, start)) {
 						if (Character.isLowerCase(b.getCoord(start))) {
 							if (Character.isUpperCase(b.getCoord(end))) {
 
@@ -80,6 +85,8 @@ public class PieceMovement {
 					} else {
 						Exception ex = new Exception("Invalid move.");
 						System.out.println(ex.getMessage());
+						System.out.println();
+						valid = false;
 					}
 
 				} else if (pc.checkMove(next)) {
@@ -92,21 +99,30 @@ public class PieceMovement {
 							(int) pc.getGroup(3).toLowerCase().toCharArray()[0] - 'a');
 					
 					if (vc.validMove(
-							start,
-							end,
-							b.getCoord(start))
-							&& b.getCoord(start) != '-' && b.getCoord(end) == '-') {
+							start, end, b.getCoord(start), false) && b.collisionCheck(start, end)
+							&& b.getCoord(start) != '-' && b.getCoord(end) == '-' && b.turnCheck(turn, start)) {
 						b.move(start, end);
 					} else {
 						Exception ex = new Exception("Invalid move.");
 						System.out.println(ex.getMessage());
+						System.out.println();
+						valid = false;
 					}
 				} else {
 					Exception ex = new Exception("Invalid input.");
 					System.out.println(ex.getMessage());
+					valid = false;
 				}
 				next = br.readLine();
-				b.printBoard();
+				if(valid){
+					b.printBoard();	
+					if(turn){
+						turn = false;
+					}else{
+						turn = true;
+					}
+				}
+				
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

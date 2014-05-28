@@ -3,34 +3,37 @@ package Projects;
 import java.awt.Point;
 
 public class ValidityChecker {
-	public boolean validMove(Point start, Point end, char piece) {
-		if (piece == 'R' || piece == 'r') {
+	public boolean validMove(Point start, Point end, char piece, boolean taking) {
+		if (Character.toUpperCase(piece) == 'R') {
 			return validRook(start, end);
 		}
-		if (piece == 'N' || piece == 'n') {
+		else if (Character.toUpperCase(piece) == 'N') {
 			return validKnight(start, end);
 		}
-		if (piece == 'B' || piece == 'b') {
+		else if (Character.toUpperCase(piece) == 'B') {
 			return validBishop(start, end);
 		}
-		if (piece == 'Q' || piece == 'q') {
+		else if (Character.toUpperCase(piece) == 'Q') {
 			return validQueen(start, end);
 		}
-		if (piece == 'K' || piece == 'k') {
+		else if (Character.toUpperCase(piece) == 'K') {
 			return validKing(start, end);
+		}
+		else if (Character.toUpperCase(piece) == 'P') {
+			return validPawn(start, end, piece, taking);
 		}
 		
 		return false;
 	}
 
-	private static boolean validRook(Point start, Point end) {
+	private boolean validRook(Point start, Point end) {
 		if (start.x == end.x || start.y == end.y) {
 			return true;
 		}
 		return false;
 	}
 
-	private static boolean validKnight(Point start, Point end) {
+	private boolean validKnight(Point start, Point end) {
 		if (start.x + 2 == end.x
 				&& (start.y + 1 == end.y || start.y - 1 == end.y)) {
 			return true;
@@ -51,14 +54,12 @@ public class ValidityChecker {
 		return false;
 	}
 
-	private static boolean validBishop(Point start, Point end) {
-		if(start.x - end.x == start.y - end.y || start.x - end.x == end.y - start.y || end.x - start.x == start.y - end.y){
-			return true;
-		}
-		return false;
+	private boolean validBishop(Point start, Point end) {
+		return(start.x - end.x == start.y - end.y || start.x - end.x == end.y - start.y || end.x - start.x == start.y - end.y);
+			
 	}
 
-	private static boolean validKing(Point start, Point end) {
+	private boolean validKing(Point start, Point end) {
 		if((start.x - end.x == 1 || start.x - end.x == -1) && (start.y - end.y == 1 || start.y - end.y == -1)){
 			return true;
 		}else if((start.x == end.x && (start.y - end.y == 1 || start.y - end.y == -1)) || (start.y == end.y && (start.x - end.x == 1 || start.x - end.x == -1))){
@@ -67,12 +68,33 @@ public class ValidityChecker {
 		return false;
 	}
 
-	private static boolean validQueen(Point start, Point end) {
+	private boolean validQueen(Point start, Point end) {
 		if(start.x - end.x == start.y - end.y || start.x - end.x == end.y - start.y || end.x - start.x == start.y - end.y){
 			return true;
 		}else if (start.x == end.x || start.y == end.y) {
 			return true;
 		}
 		return false;
+	}
+	private boolean validPawn(Point start, Point end, char piece, boolean taking){
+		if(taking){
+			if(Character.isUpperCase(piece)){
+				return start.x == end.x - 1 && (start.y == end.y - 1 || start.y == end.y + 1);
+			}else{
+				return start.x == end.x + 1 && (start.y == end.y - 1 || start.y == end.y + 1);
+			}
+		}
+		if(Character.isUpperCase(piece) && (start.x == 1 || start.x == 6)){
+			
+			return start.x == end.x - 2;
+		}else if(Character.isLowerCase(piece) && (start.x == 1 || start.x == 6)){
+			return start.x == end.x + 2;
+		}
+		if(Character.isUpperCase(piece)){
+			return start.x == end.x - 1;
+		}else{
+			return start.x == end.x + 1;
+		}
+		
 	}
 }
