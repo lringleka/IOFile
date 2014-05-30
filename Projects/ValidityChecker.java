@@ -7,19 +7,19 @@ public class ValidityChecker {
 		if (Character.toUpperCase(piece) == 'R') {
 			return validRook(start, end);
 		}
-		else if (Character.toUpperCase(piece) == 'N') {
+		else if (piece == 'N') {
 			return validKnight(start, end);
 		}
-		else if (Character.toUpperCase(piece) == 'B') {
+		else if (piece == 'B') {
 			return validBishop(start, end);
 		}
-		else if (Character.toUpperCase(piece) == 'Q') {
+		else if (piece == 'Q') {
 			return validQueen(start, end);
 		}
-		else if (Character.toUpperCase(piece) == 'K') {
+		else if (piece == 'K') {
 			return validKing(start, end);
 		}
-		else if (Character.toUpperCase(piece) == 'P') {
+		else if (piece == 'P') {
 			return validPawn(start, end, piece, taking);
 		}
 		

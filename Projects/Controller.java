@@ -21,11 +21,12 @@ public class Controller {
 		PatternChecker pc = new PatternChecker();
 		Board b = new Board();
 		Boolean valid;
-		Boolean turn;
+		Boolean isWhiteTurn;
+		
 
 		try {
 			next = br.readLine();
-			turn = true;
+			isWhiteTurn = true;
 			while (next != null) {
 				valid = true;
 				if (pc.checkDubMove(next)) {
@@ -43,10 +44,10 @@ public class Controller {
 							(int) pc.getGroup(8).toCharArray()[0] - '1',
 							(int) pc.getGroup(7).toLowerCase().toCharArray()[0] - 'a');
 
-					if (vc.validMove(start1, end1, b.getCoord(start1), false)
-							&& b.getCoord(end1) == '-' && b.collisionCheck(start1, end1)
-							&& vc.validMove(start2, end2, b.getCoord(start2), false)
-							&& b.getCoord(end2) == '-' && b.collisionCheck(start2, end2) && b.turnCheck(turn, start1) && b.turnCheck(turn, start2)) {
+					if (b.getCoord(start1).moveValidityChecker(start1, end1, false, isWhiteTurn)
+							&& b.getCoord(end1).getRep() == '-' && b.collisionCheck(start1, end1)
+							&& b.getCoord(start2).moveValidityChecker(start2, end2, false, isWhiteTurn)
+							&& b.getCoord(end2).getRep() == '-' && b.collisionCheck(start2, end2) && b.turnCheck(isWhiteTurn, start1) && b.turnCheck(isWhiteTurn, start2)) {
 						b.move(start1, end1);
 
 						b.move(start2, end2);
@@ -66,18 +67,18 @@ public class Controller {
 							(int) pc.getGroup(4).toCharArray()[0] - '1',
 							(int) pc.getGroup(3).toLowerCase().toCharArray()[0] - 'a');
 
-					if (vc.validMove(start, end, b.getCoord(start), true)
-							&& b.getCoord(end) != '-' && b.collisionCheck(start, end) && b.turnCheck(turn, start)) {
-						if (Character.isLowerCase(b.getCoord(start))) {
-							if (Character.isUpperCase(b.getCoord(end))) {
+					if (b.getCoord(start).moveValidityChecker(start, end, true, isWhiteTurn)
+							&& b.getCoord(end).getRep() != '-' && b.collisionCheck(start, end) && b.turnCheck(isWhiteTurn, start)) {
+						if (Character.isLowerCase(b.getCoord(start).getRep())) {
+							if (Character.isUpperCase(b.getCoord(end).getRep())) {
 
 								b.move(start, end);
 
 							}
 						}
 
-						if (Character.isUpperCase(b.getCoord(start))) {
-							if (Character.isLowerCase(b.getCoord(end))) {
+						if (Character.isUpperCase(b.getCoord(start).getRep())) {
+							if (Character.isLowerCase(b.getCoord(end).getRep())) {
 
 								b.move(start, end);
 							}
@@ -98,9 +99,8 @@ public class Controller {
 							(int) pc.getGroup(4).toCharArray()[0] - '1',
 							(int) pc.getGroup(3).toLowerCase().toCharArray()[0] - 'a');
 					
-					if (vc.validMove(
-							start, end, b.getCoord(start), false) && b.collisionCheck(start, end)
-							&& b.getCoord(start) != '-' && b.getCoord(end) == '-' && b.turnCheck(turn, start)) {
+					if (b.getCoord(start).moveValidityChecker(start, end, false, isWhiteTurn) && b.collisionCheck(start, end)
+							&& b.getCoord(start).getRep() != '-' && b.getCoord(end).getRep() == '-' && b.turnCheck(isWhiteTurn, start)) {
 						b.move(start, end);
 					} else {
 						Exception ex = new Exception("Invalid move.");
@@ -116,11 +116,7 @@ public class Controller {
 				next = br.readLine();
 				if(valid){
 					b.printBoard();	
-					if(turn){
-						turn = false;
-					}else{
-						turn = true;
-					}
+					isWhiteTurn = !isWhiteTurn;
 				}
 				
 			}
