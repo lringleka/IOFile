@@ -57,7 +57,9 @@ private Piece[][] board;
 		board[end.x][end.y] = piece;
 	}
 	public void printBoard(){
+		System.out.println("  a b c d e f g h");
 		for (int i = 0; i < 8; i++) {
+			System.out.print(i + 1 + " ");
 			for (int j = 0; j < 8; j++) {
 				System.out.print(board[i][j] + " ");
 			}
@@ -153,8 +155,9 @@ private Piece[][] board;
 		return false;
 	}
 	public void detectCheck(boolean isWhiteTurn){
-		Point king;
+		Point king = null;
 		char target;
+		boolean check = false;
 		if(isWhiteTurn){
 			target = 'K';
 		}else{
@@ -162,12 +165,33 @@ private Piece[][] board;
 		}
 		for(int i = 0; i < board.length;i++){
 			for(int j = 0; j < board[0].length;j++){
-				if(board[i][j].getRep() == target){
+				if(board[i][j].getRep() == target && king == null){
 					king = new Point(i,j);
 				}
 			}
 		}
-		
-		System.out.println("King is in check.");
+		for(int i = 0; i < board.length;i++){
+			for(int j = 0; j < board[0].length;j++){
+				if(Character.isUpperCase(target)){
+					if(Character.isLowerCase(board[i][j].getRep()) && !check){
+						check =	board[i][j].moveValidityChecker(new Point(i,j), king, true, isWhiteTurn) && collisionCheck(new Point(i,j),king);
+					}
+				}else{
+					if(Character.isUpperCase(board[i][j].getRep()) && !check){
+						check =	board[i][j].moveValidityChecker(new Point(i,j), king, true, isWhiteTurn) && collisionCheck(new Point(i,j),king);
+					}
+				}
+			}
+		}
+		String color = null;
+		if(isWhiteTurn){
+			color = "white";
+		}else{
+			color = "black";
+		}
+		if(check){
+			System.out.println("The " + color +  " king is in check.");
+		}
+		System.out.println();
 	}
 }

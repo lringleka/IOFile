@@ -17,7 +17,6 @@ public class Controller {
 		InputStreamReader isr = new InputStreamReader(is);
 		BufferedReader br = new BufferedReader(isr);
 		String next;
-		ValidityChecker vc = new ValidityChecker();
 		PatternChecker pc = new PatternChecker();
 		Board b = new Board();
 		Boolean valid;
@@ -117,6 +116,7 @@ public class Controller {
 				if(valid){
 					b.printBoard();	
 					isWhiteTurn = !isWhiteTurn;
+					b.detectCheck(isWhiteTurn);
 				}
 				
 			}
