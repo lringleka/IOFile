@@ -1,6 +1,7 @@
 package Projects;
 
 import java.awt.Point;
+import java.util.ArrayList;
 
 public class Pawn extends Piece{
 	private char pieceRep;
@@ -27,7 +28,7 @@ public class Pawn extends Piece{
 			
 			return start.x == end.x - 2 || start.x == end.x - 1;
 		}else if(!isWhite && start.x == 6 ){
-			return start.x == end.x + 2 || start.x == start.x + 1;
+			return start.x == end.x + 2 || start.x == end.x + 1;
 		}
 		if(isWhite){
 			return start.x == end.x - 1;
@@ -38,5 +39,9 @@ public class Pawn extends Piece{
 	}
 	public char getRep(){
 		return pieceRep;
+	}
+	public ArrayList<Point> possibleMovesKey(Point p){
+		ArrayList<Point> parr = new ArrayList<Point>();
+		return parr;
 	}
 }
